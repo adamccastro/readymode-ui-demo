@@ -3,270 +3,493 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Readymode Lead-Forward UI Demo</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Readymode Dashboard Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .header .tagline {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metric {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .metric.primary { color: #3498db; }
+        .metric.success { color: #27ae60; }
+        .metric.warning { color: #f39c12; }
+        .metric.danger { color: #e74c3c; }
+        .metric.info { color: #9b59b6; }
+
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            border-radius: 10px;
+            height: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease;
+        }
+
+        .status-list {
+            list-style: none;
+        }
+
+        .status-list li {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .status-list li:last-child {
+            border-bottom: none;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-online { background: #27ae60; }
+        .status-busy { background: #f39c12; }
+        .status-break { background: #e74c3c; }
+        .status-offline { background: #95a5a6; }
+
+        .lead-card {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .lead-priority {
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+
+        .priority-high { background: #e74c3c; color: white; }
+        .priority-medium { background: #f39c12; color: white; }
+        .priority-low { background: #27ae60; color: white; }
+
+        .chart-container {
+            height: 200px;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(52, 152, 219, 0.1) 0%, transparent 100%);
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .bar {
+            background: linear-gradient(to top, #3498db, #5dade2);
+            border-radius: 4px 4px 0 0;
+            min-width: 20px;
+            margin: 0 2px;
+            position: relative;
+            transition: height 2s ease;
+        }
+
+        .bar::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .metric {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cta-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+        }
+
+        .branding {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .branding a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Sidebar -->
-        <div class="sidebar">
-            <div class="logo">
-                <div class="logo-icon">📞</div>
-                <div class="logo-text">Readymode</div>
-                <div class="demo-badge">DEMO</div>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-item active" data-tab="lead">
-                    <span class="nav-icon">📋</span>
-                    Current Lead
-                </div>
-                <div class="nav-item" data-tab="calendar">
-                    <span class="nav-icon">📅</span>
-                    Calendar
-                </div>
-                <div class="nav-item" data-tab="history">
-                    <span class="nav-icon">📊</span>
-                    Call History
-                </div>
-                <div class="nav-item" data-tab="settings">
-                    <span class="nav-icon">⚙️</span>
-                    Settings
-                </div>
-            </div>
+        <div class="header fade-in">
+            <h1>🚀 Readymode Power Dashboard</h1>
+            <div class="tagline">Real-time Analytics & Lead Management | New Revolution Marketing</div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Header -->
-            <div class="header">
-                <div class="search-section">
-                    <input type="text" class="search-input" placeholder="Search leads...">
-                    <select class="dropdown-btn">
-                        <option>All Campaigns</option>
-                        <option>TS Legal</option>
-                        <option>ACA</option>
-                        <option>LINX</option>
-                    </select>
+        <div class="dashboard">
+            <!-- Call Metrics -->
+            <div class="card fade-in">
+                <h3>📞 Call Metrics</h3>
+                <div class="metric primary" id="total-calls">0</div>
+                <div class="metric-label">Total Calls Today</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="background: #3498db; width: 0%" id="calls-progress"></div>
                 </div>
-                <div class="header-info">
-                    <div class="agent-status">
-                        <div class="status-dot online"></div>
-                        <span>Sarah Martinez | NRM | Online 2h 15m</span>
-                    </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                    <span>Connected: <strong id="connected-calls">0</strong></span>
+                    <span>Transfers: <strong id="transfer-calls">0</strong></span>
                 </div>
             </div>
 
-            <!-- Content Area -->
-            <div class="content-area">
-                <!-- Lead Tab -->
-                <div class="tab-content active" id="lead-tab">
-                    <div class="lead-section">
-                        <div class="lead-header">
-                            <div class="lead-title">📞 Active Lead - Ready to Dial</div>
-                            <div class="time-notice">⏰ OPTIMAL CALL TIME - Act Now!</div>
-                        </div>
-
-                        <div class="lead-card">
-                            <div class="lead-contact">
-                                <span class="contact-name">Jennifer Rodriguez</span>
-                                <span class="contact-phone">(305) 555-7829</span>
-                                <div class="priority-badge pulse">HIGH PRIORITY</div>
-                            </div>
-
-                            <div class="lead-grid">
-                                <div class="detail-item">
-                                    <div class="detail-label">Last Contact</div>
-                                    <div class="detail-value status-callback">3/15/26 - Scheduled Callback</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Best Time</div>
-                                    <div class="detail-value status-optimal">NOW (2-4 PM EST) ✅</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Lead Source</div>
-                                    <div class="detail-value">Westgate Timeshare Exit</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Attempts</div>
-                                    <div class="detail-value">3 of 5 remaining</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Campaign</div>
-                                    <div class="detail-value">TS LEGAL - Active</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Location</div>
-                                    <div class="detail-value">Orlando, FL 🌴</div>
-                                </div>
-                            </div>
-
-                            <div class="lead-notes">
-                                <div class="notes-header">📋 Lead Notes & Context</div>
-                                <div class="notes-content">
-                                    <div class="note-highlight">
-                                        <strong>✅ CALLBACK SCHEDULED:</strong> Requested call back today between 2-4 PM EST.
-                                    </div>
-                                    <div class="note-section">
-                                        <strong>📋 BACKGROUND:</strong> Owns 2 Westgate properties in Orlando. Mentioned financial hardship due to maintenance fees ($800/month total). Very interested in timeshare exit options.
-                                    </div>
-                                    <div class="note-section">
-                                        <strong>👥 DECISION MAKER:</strong> Husband makes financial decisions - ask to speak with both parties. Wife Jennifer is initial contact but needs spouse involvement.
-                                    </div>
-                                    <div class="note-urgent">
-                                        <strong>🔥 HOT LEAD:</strong> Schedule appointment immediately if both parties available.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="action-section">
-                                <button class="btn btn-dial" id="dial-btn">📞 DIAL NOW</button>
-                                <button class="btn btn-secondary" id="appointment-btn">✅ Set Appointment</button>
-                                <button class="btn btn-secondary" id="notes-btn">📝 Add Notes</button>
-                                <button class="btn btn-secondary" id="reschedule-btn">⏰ Reschedule</button>
-                            </div>
-                        </div>
-
-                        <div class="quick-stats">
-                            <div class="stat-card">
-                                <div class="stat-number">23</div>
-                                <div class="stat-label">Leads in Queue</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">7</div>
-                                <div class="stat-label">Calls Today</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">2</div>
-                                <div class="stat-label">Appointments</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">29%</div>
-                                <div class="stat-label">Connect Rate</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Calendar Tab -->
-                <div class="tab-content" id="calendar-tab">
-                    <div class="calendar-section">
-                        <h2>📅 Calendar View</h2>
-                        <p class="secondary-notice">Calendar is now a secondary tab - agents see leads first, schedule when needed.</p>
-                        <div class="calendar-placeholder">
-                            <div class="calendar-month">March 2026</div>
-                            <div class="calendar-grid">
-                                <!-- Calendar would go here -->
-                                <div class="calendar-message">
-                                    <strong>Lead-Forward Design:</strong> Calendar becomes secondary to actual lead information.
-                                    Agents can quickly access scheduling when setting appointments.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- History Tab -->
-                <div class="tab-content" id="history-tab">
-                    <div class="history-section">
-                        <h2>📊 Call History</h2>
-                        <div class="history-list">
-                            <div class="history-item">
-                                <div class="history-date">3/15/26 2:45 PM</div>
-                                <div class="history-details">Jennifer Rodriguez | Callback Scheduled | 4min 23s</div>
-                            </div>
-                            <div class="history-item">
-                                <div class="history-date">3/14/26 3:15 PM</div>
-                                <div class="history-details">Michael Thompson | No Answer | 0min 30s</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Settings Tab -->
-                <div class="tab-content" id="settings-tab">
-                    <div class="settings-section">
-                        <h2>⚙️ Settings</h2>
-                        <p>Agent preferences and system settings would be configured here.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Soft Phone Panel -->
-        <div class="phone-panel">
-            <div class="campaigns">
-                <div class="campaigns-title">Campaign Selection</div>
-                <div class="campaign-buttons">
-                    <button class="campaign-btn" data-campaign="ACA">ACA</button>
-                    <button class="campaign-btn" data-campaign="LINX">LINX</button>
-                    <button class="campaign-btn" data-campaign="TCRC">TCRC</button>
-                    <button class="campaign-btn active" data-campaign="TS LEGAL">TS LEGAL</button>
-                    <button class="campaign-btn" data-campaign="THC">THC</button>
-                    <button class="campaign-btn" data-campaign="Cstone">Cstone</button>
+            <!-- Conversion Rate -->
+            <div class="card fade-in">
+                <h3>💰 Conversion Rate</h3>
+                <div class="metric success" id="conversion-rate">0%</div>
+                <div class="metric-label">Leads to Appointments</div>
+                <div class="chart-container">
+                    <div class="bar" data-value="12" style="height: 0px" id="bar-1"></div>
+                    <div class="bar" data-value="18" style="height: 0px" id="bar-2"></div>
+                    <div class="bar" data-value="15" style="height: 0px" id="bar-3"></div>
+                    <div class="bar" data-value="22" style="height: 0px" id="bar-4"></div>
+                    <div class="bar" data-value="28" style="height: 0px" id="bar-5"></div>
+                    <div class="bar" data-value="31" style="height: 0px" id="bar-6"></div>
+                    <div class="bar" data-value="25" style="height: 0px" id="bar-7"></div>
                 </div>
             </div>
 
-            <div class="dialpad-section">
-                <input type="text" class="number-input" id="phone-number" value="(305) 555-7829">
+            <!-- Agent Status -->
+            <div class="card fade-in">
+                <h3>👥 Agent Status</h3>
+                <ul class="status-list">
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Sarah Martinez</span>
+                        <span class="priority-high">ACTIVE</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Mike Johnson</span>
+                        <span class="priority-high">ACTIVE</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-busy"></div>Jennifer Rodriguez</span>
+                        <span class="priority-medium">ON CALL</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-break"></div>David Chen</span>
+                        <span class="priority-low">BREAK</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-offline"></div>Maria Garcia</span>
+                        <span style="color: #95a5a6;">OFFLINE</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Hot Leads -->
+            <div class="card fade-in">
+                <h3>🔥 Hot Leads Queue</h3>
+                <div class="metric warning" id="hot-leads">0</div>
+                <div class="metric-label">Priority Callbacks</div>
                 
-                <div class="dialpad">
-                    <button class="dial-btn" data-digit="1">1</button>
-                    <button class="dial-btn" data-digit="2">2<div class="dial-letters">ABC</div></button>
-                    <button class="dial-btn" data-digit="3">3<div class="dial-letters">DEF</div></button>
-                    <button class="dial-btn" data-digit="4">4<div class="dial-letters">GHI</div></button>
-                    <button class="dial-btn" data-digit="5">5<div class="dial-letters">JKL</div></button>
-                    <button class="dial-btn" data-digit="6">6<div class="dial-letters">MNO</div></button>
-                    <button class="dial-btn" data-digit="7">7<div class="dial-letters">PQRS</div></button>
-                    <button class="dial-btn" data-digit="8">8<div class="dial-letters">TUV</div></button>
-                    <button class="dial-btn" data-digit="9">9<div class="dial-letters">WXYZ</div></button>
-                    <button class="dial-btn" data-digit="*">*</button>
-                    <button class="dial-btn" data-digit="0">0</button>
-                    <button class="dial-btn" data-digit="#">#</button>
+                <div class="lead-card">
+                    <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 8px;">
+                        <strong>Jennifer Rodriguez</strong>
+                        <span class="lead-priority priority-high">HIGH</span>
+                    </div>
+                    <div style="color: #7f8c8d; font-size: 0.9em;">
+                        Orlando, FL • Timeshare Exit • 2:45 PM EST
+                    </div>
                 </div>
 
-                <div class="phone-controls">
-                    <button class="phone-btn" id="notes-phone">📋</button>
-                    <button class="phone-btn" id="mute-btn">🔇</button>
-                    <button class="phone-btn" id="directory-btn">📞</button>
+                <div class="lead-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <strong>Michael Thompson</strong>
+                        <span class="lead-priority priority-medium">MED</span>
+                    </div>
+                    <div style="color: #7f8c8d; font-size: 0.9em;">
+                        Tampa, FL • Solar Consultation • Scheduled
+                    </div>
                 </div>
             </div>
 
-            <div class="call-status" id="call-status" style="display: none;">
-                <div class="calling-animation">
-                    <div class="pulse-ring"></div>
-                    <div class="calling-text">Calling Jennifer Rodriguez...</div>
-                    <div class="call-timer">00:00</div>
-                    <button class="btn btn-hangup" id="hangup-btn">📞 Hang Up</button>
+            <!-- Revenue Tracking -->
+            <div class="card fade-in">
+                <h3>💎 Revenue Today</h3>
+                <div class="metric info" id="revenue">$0</div>
+                <div class="metric-label">Total Appointments Booked</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="background: #9b59b6; width: 0%" id="revenue-progress"></div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <div>Goal: <strong>$50,000</strong></div>
+                    <div>Remaining: <strong id="remaining-goal">$50,000</strong></div>
                 </div>
             </div>
 
-            <div class="device-status">
-                <div class="status-item">
-                    <span>Speaker:</span>
-                    <span>Volume 70%</span>
-                </div>
-                <div class="status-item">
-                    <span>Device:</span>
-                    <span>Browser</span>
-                </div>
-                <div class="connection-status">
-                    <div class="status-dot online"></div>
-                    <span>Connection: Excellent</span>
-                </div>
+            <!-- System Health -->
+            <div class="card fade-in">
+                <h3>🔧 System Health</h3>
+                <ul class="status-list">
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Readymode API</span>
+                        <span class="priority-high">CONNECTED</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Lead Database</span>
+                        <span class="priority-high">SYNCED</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Phone System</span>
+                        <span class="priority-high">ONLINE</span>
+                    </li>
+                    <li>
+                        <span><div class="status-indicator status-online"></div>Call Recording</span>
+                        <span class="priority-high">ACTIVE</span>
+                    </li>
+                </ul>
             </div>
+        </div>
+
+        <div class="cta-section fade-in">
+            <h2 style="color: #2c3e50; margin-bottom: 15px;">Ready to Transform Your Lead Management?</h2>
+            <p style="color: #7f8c8d; font-size: 1.1em; margin-bottom: 25px;">
+                See how Readymode integration can 3X your conversion rates and streamline operations
+            </p>
+            <a href="mailto:adam@newrevolutionmarketing.com?subject=Readymode%20Demo%20Request" class="cta-button">
+                📧 Schedule Demo
+            </a>
+            <a href="tel:+1-555-0123" class="cta-button">
+                📞 Call Now
+            </a>
+        </div>
+
+        <div class="branding">
+            Powered by <a href="https://newrevolutionmarketing.com">New Revolution Marketing</a> • 
+            Built with <a href="https://readymode.com">Readymode</a> API
         </div>
     </div>
 
-    <!-- Demo Features Notice -->
-    <div class="demo-notice">
-        <div class="demo-content">
-            <strong>🎯 Lead-Forward UI Concept</strong> - 
-            This demonstrates how agent workflow improves when lead details are primary and calendar is secondary.
-            <button class="demo-close" onclick="this.parentElement.parentElement.style.display='none'">×</button>
-        </div>
-    </div>
+    <script>
+        // Animated counters and real-time updates
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            function updateCounter() {
+                start += increment;
+                if (start < target) {
+                    element.textContent = Math.floor(start);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = target;
+                }
+            }
+            
+            updateCounter();
+        }
 
-    <script src="script.js"></script>
+        function animateProgress(element, targetWidth) {
+            element.style.width = targetWidth + '%';
+        }
+
+        function animateBars() {
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const value = parseInt(bar.dataset.value);
+                    bar.style.height = (value * 5) + 'px';
+                }, index * 200);
+            });
+        }
+
+        // Simulate real-time data updates
+        function updateDashboard() {
+            const calls = Math.floor(Math.random() * 50) + 150;
+            const conversion = Math.floor(Math.random() * 15) + 22;
+            const leads = Math.floor(Math.random() * 8) + 3;
+            const revenue = Math.floor(Math.random() * 20000) + 25000;
+
+            animateCounter(document.getElementById('total-calls'), calls);
+            animateCounter(document.getElementById('connected-calls'), Math.floor(calls * 0.7));
+            animateCounter(document.getElementById('transfer-calls'), Math.floor(calls * 0.3));
+            
+            document.getElementById('conversion-rate').textContent = conversion + '%';
+            animateProgress(document.getElementById('calls-progress'), (calls / 200) * 100);
+            
+            animateCounter(document.getElementById('hot-leads'), leads);
+            
+            document.getElementById('revenue').textContent = '$' + revenue.toLocaleString();
+            document.getElementById('remaining-goal').textContent = '$' + (50000 - revenue).toLocaleString();
+            animateProgress(document.getElementById('revenue-progress'), (revenue / 50000) * 100);
+        }
+
+        // Initialize dashboard with staggered animations
+        setTimeout(() => {
+            updateDashboard();
+            animateBars();
+        }, 500);
+
+        // Update every 10 seconds to simulate real-time data
+        setInterval(updateDashboard, 10000);
+
+        // Add pulse effect to hot leads
+        setInterval(() => {
+            const hotLeadsElement = document.getElementById('hot-leads');
+            hotLeadsElement.classList.add('pulse');
+            setTimeout(() => {
+                hotLeadsElement.classList.remove('pulse');
+            }, 1000);
+        }, 5000);
+    </script>
 </body>
 </html>
