@@ -1,0 +1,25 @@
+{
+  "name": "readymode-lead-forward-demo",
+  "version": "1.0.0",
+  "description": "Interactive demo of lead-forward UI design for Readymode telemarketing platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 3000",
+    "serve": "python3 -m http.server 3000",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "keywords": [
+    "readymode",
+    "telemarketing",
+    "ui-demo",
+    "lead-management",
+    "call-center"
+  ],
+  "author": "Hugo Castro",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamccastro/readymode-ui-demo"
+  },
+  "homepage": "https://readymode-lead-forward.netlify.app"
+}

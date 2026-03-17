@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readymode Lead-Forward UI Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">📞</div>
+                <div class="logo-text">Readymode</div>
+                <div class="demo-badge">DEMO</div>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-item active" data-tab="lead">
+                    <span class="nav-icon">📋</span>
+                    Current Lead
+                </div>
+                <div class="nav-item" data-tab="calendar">
+                    <span class="nav-icon">📅</span>
+                    Calendar
+                </div>
+                <div class="nav-item" data-tab="history">
+                    <span class="nav-icon">📊</span>
+                    Call History
+                </div>
+                <div class="nav-item" data-tab="settings">
+                    <span class="nav-icon">⚙️</span>
+                    Settings
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="search-section">
+                    <input type="text" class="search-input" placeholder="Search leads...">
+                    <select class="dropdown-btn">
+                        <option>All Campaigns</option>
+                        <option>TS Legal</option>
+                        <option>ACA</option>
+                        <option>LINX</option>
+                    </select>
+                </div>
+                <div class="header-info">
+                    <div class="agent-status">
+                        <div class="status-dot online"></div>
+                        <span>Sarah Martinez | NRM | Online 2h 15m</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Lead Tab -->
+                <div class="tab-content active" id="lead-tab">
+                    <div class="lead-section">
+                        <div class="lead-header">
+                            <div class="lead-title">📞 Active Lead - Ready to Dial</div>
+                            <div class="time-notice">⏰ OPTIMAL CALL TIME - Act Now!</div>
+                        </div>
+
+                        <div class="lead-card">
+                            <div class="lead-contact">
+                                <span class="contact-name">Jennifer Rodriguez</span>
+                                <span class="contact-phone">(305) 555-7829</span>
+                                <div class="priority-badge pulse">HIGH PRIORITY</div>
+                            </div>
+
+                            <div class="lead-grid">
+                                <div class="detail-item">
+                                    <div class="detail-label">Last Contact</div>
+                                    <div class="detail-value status-callback">3/15/26 - Scheduled Callback</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Best Time</div>
+                                    <div class="detail-value status-optimal">NOW (2-4 PM EST) ✅</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Lead Source</div>
+                                    <div class="detail-value">Westgate Timeshare Exit</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Attempts</div>
+                                    <div class="detail-value">3 of 5 remaining</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Campaign</div>
+                                    <div class="detail-value">TS LEGAL - Active</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Location</div>
+                                    <div class="detail-value">Orlando, FL 🌴</div>
+                                </div>
+                            </div>
+
+                            <div class="lead-notes">
+                                <div class="notes-header">📋 Lead Notes & Context</div>
+                                <div class="notes-content">
+                                    <div class="note-highlight">
+                                        <strong>✅ CALLBACK SCHEDULED:</strong> Requested call back today between 2-4 PM EST.
+                                    </div>
+                                    <div class="note-section">
+                                        <strong>📋 BACKGROUND:</strong> Owns 2 Westgate properties in Orlando. Mentioned financial hardship due to maintenance fees ($800/month total). Very interested in timeshare exit options.
+                                    </div>
+                                    <div class="note-section">
+                                        <strong>👥 DECISION MAKER:</strong> Husband makes financial decisions - ask to speak with both parties. Wife Jennifer is initial contact but needs spouse involvement.
+                                    </div>
+                                    <div class="note-urgent">
+                                        <strong>🔥 HOT LEAD:</strong> Schedule appointment immediately if both parties available.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="action-section">
+                                <button class="btn btn-dial" id="dial-btn">📞 DIAL NOW</button>
+                                <button class="btn btn-secondary" id="appointment-btn">✅ Set Appointment</button>
+                                <button class="btn btn-secondary" id="notes-btn">📝 Add Notes</button>
+                                <button class="btn btn-secondary" id="reschedule-btn">⏰ Reschedule</button>
+                            </div>
+                        </div>
+
+                        <div class="quick-stats">
+                            <div class="stat-card">
+                                <div class="stat-number">23</div>
+                                <div class="stat-label">Leads in Queue</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">7</div>
+                                <div class="stat-label">Calls Today</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">Appointments</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">29%</div>
+                                <div class="stat-label">Connect Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calendar Tab -->
+                <div class="tab-content" id="calendar-tab">
+                    <div class="calendar-section">
+                        <h2>📅 Calendar View</h2>
+                        <p class="secondary-notice">Calendar is now a secondary tab - agents see leads first, schedule when needed.</p>
+                        <div class="calendar-placeholder">
+                            <div class="calendar-month">March 2026</div>
+                            <div class="calendar-grid">
+                                <!-- Calendar would go here -->
+                                <div class="calendar-message">
+                                    <strong>Lead-Forward Design:</strong> Calendar becomes secondary to actual lead information.
+                                    Agents can quickly access scheduling when setting appointments.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tab -->
+                <div class="tab-content" id="history-tab">
+                    <div class="history-section">
+                        <h2>📊 Call History</h2>
+                        <div class="history-list">
+                            <div class="history-item">
+                                <div class="history-date">3/15/26 2:45 PM</div>
+                                <div class="history-details">Jennifer Rodriguez | Callback Scheduled | 4min 23s</div>
+                            </div>
+                            <div class="history-item">
+                                <div class="history-date">3/14/26 3:15 PM</div>
+                                <div class="history-details">Michael Thompson | No Answer | 0min 30s</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-content" id="settings-tab">
+                    <div class="settings-section">
+                        <h2>⚙️ Settings</h2>
+                        <p>Agent preferences and system settings would be configured here.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soft Phone Panel -->
+        <div class="phone-panel">
+            <div class="campaigns">
+                <div class="campaigns-title">Campaign Selection</div>
+                <div class="campaign-buttons">
+                    <button class="campaign-btn" data-campaign="ACA">ACA</button>
+                    <button class="campaign-btn" data-campaign="LINX">LINX</button>
+                    <button class="campaign-btn" data-campaign="TCRC">TCRC</button>
+                    <button class="campaign-btn active" data-campaign="TS LEGAL">TS LEGAL</button>
+                    <button class="campaign-btn" data-campaign="THC">THC</button>
+                    <button class="campaign-btn" data-campaign="Cstone">Cstone</button>
+                </div>
+            </div>
+
+            <div class="dialpad-section">
+                <input type="text" class="number-input" id="phone-number" value="(305) 555-7829">
+                
+                <div class="dialpad">
+                    <button class="dial-btn" data-digit="1">1</button>
+                    <button class="dial-btn" data-digit="2">2<div class="dial-letters">ABC</div></button>
+                    <button class="dial-btn" data-digit="3">3<div class="dial-letters">DEF</div></button>
+                    <button class="dial-btn" data-digit="4">4<div class="dial-letters">GHI</div></button>
+                    <button class="dial-btn" data-digit="5">5<div class="dial-letters">JKL</div></button>
+                    <button class="dial-btn" data-digit="6">6<div class="dial-letters">MNO</div></button>
+                    <button class="dial-btn" data-digit="7">7<div class="dial-letters">PQRS</div></button>
+                    <button class="dial-btn" data-digit="8">8<div class="dial-letters">TUV</div></button>
+                    <button class="dial-btn" data-digit="9">9<div class="dial-letters">WXYZ</div></button>
+                    <button class="dial-btn" data-digit="*">*</button>
+                    <button class="dial-btn" data-digit="0">0</button>
+                    <button class="dial-btn" data-digit="#">#</button>
+                </div>
+
+                <div class="phone-controls">
+                    <button class="phone-btn" id="notes-phone">📋</button>
+                    <button class="phone-btn" id="mute-btn">🔇</button>
+                    <button class="phone-btn" id="directory-btn">📞</button>
+                </div>
+            </div>
+
+            <div class="call-status" id="call-status" style="display: none;">
+                <div class="calling-animation">
+                    <div class="pulse-ring"></div>
+                    <div class="calling-text">Calling Jennifer Rodriguez...</div>
+                    <div class="call-timer">00:00</div>
+                    <button class="btn btn-hangup" id="hangup-btn">📞 Hang Up</button>
+                </div>
+            </div>
+
+            <div class="device-status">
+                <div class="status-item">
+                    <span>Speaker:</span>
+                    <span>Volume 70%</span>
+                </div>
+                <div class="status-item">
+                    <span>Device:</span>
+                    <span>Browser</span>
+                </div>
+                <div class="connection-status">
+                    <div class="status-dot online"></div>
+                    <span>Connection: Excellent</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Demo Features Notice -->
+    <div class="demo-notice">
+        <div class="demo-content">
+            <strong>🎯 Lead-Forward UI Concept</strong> - 
+            This demonstrates how agent workflow improves when lead details are primary and calendar is secondary.
+            <button class="demo-close" onclick="this.parentElement.parentElement.style.display='none'">×</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
